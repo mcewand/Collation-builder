@@ -38,18 +38,6 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
 
         // Find matching quire items
 
-        /*
-        $sql = "SELECT t.record_id,
-            FROM
-                {$db->prefix}element_texts t,
-                LEFT JOIN {$db->prefix}elements e
-                    ON t.element_id=e.id
-            WHERE
-                t.record_id != ". $itemId ."
-                AND
-                (e.id = t.element_id AND e.name = 'Quire')";
-        */
-
         // Get everything from the Collation Group
         $db = get_db();
         // @todo OMG fix this!
@@ -59,8 +47,7 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
                     ON (e.id = t.element_id AND e.name ='Collation Group')
                 WHERE
                     (e.name = 'Collation Group' AND t.text = " . $metadata['Collation Group'] . ")";
-                   // AND
-                   // (t.record_id != ". $itemId.")";
+
         $collation_group = $db->fetchAll($sql);
 
         $this->view->helper1 = $collation_group;
@@ -85,7 +72,6 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
         $quire_group = $db->fetchAll($sql);
 
         // This gives me the ID's for everything in the quire.
-        //$this->view->helper2 = $quire_group;
 
         // Load each item in the Quire
         foreach ($quire_group as $item_id) {
@@ -97,8 +83,6 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
 
         // Now we have the postion for each item in the quire, in an indexed array
         $this->view->quire_full = $quire;
-
-        //print_r( $metadata);
 
         $found = FALSE;
         while($found == FALSE) {
@@ -118,48 +102,45 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
             }
         }
 
-        if (isset($quire[$first_key]['R']['record_id'])) {
-            $fr = get_record_by_id('Item', $quire[$first_key]['R']['record_id']);
-            $fr_image = files_for_item(array(), array(), $fr);
-        } else {
-            $fr_image = 'Missing';
+
+        // Now that we've set the outside end of the array,
+        // use last and first key to get both positions
+        $struc = array(
+            'fr' => array(
+                'pos' => 'first_key',
+                'side' => 'R'
+            ),
+            'fv' => array(
+                'pos' => 'first_key',
+                'side' => 'V'
+            ),
+            'lr' => array(
+                'pos' => 'last_key',
+                'side' => 'R'
+            ),
+            'lv' => array(
+                'pos' => 'last_key',
+                'side' => 'V'
+            ),
+        );
+
+        foreach ($struc as $k=>$v) {
+           if (isset($quire[${$v['pos']}][$v['side']]['record_id'])) {
+                ${$k} = get_record_by_id('Item', $quire[${$v['pos']}][$v['side']]['record_id']);
+                ${$k . '_image'} = files_for_item(array(), array(), ${$k});
+            } else {
+                ${$k . '_image'} = 'Missing';
+            }
+
         }
 
-        if (isset($quire[$first_key]['V']['record_id'])) {
-            $fv = get_record_by_id('Item', $quire[$first_key]['V']['record_id']);
-            $fv_image = files_for_item(array(), array(), $fv);
-        } else {
-            $fv_image = 'Missing';
-        }
-
-        if (isset($quire[$last_key]['R']['record_id'])) {
-            $lr = get_record_by_id('Item', $quire[$last_key]['R']['record_id']);
-            $lr_image = files_for_item(array(), array(), $lr);
-        } else {
-            $lr_image = 'Missing';
-        }
-
-        if (isset($quire[$last_key]['V']['record_id'])) {
-            $lv = get_record_by_id('Item', $quire[$last_key]['V']['record_id']);
-            $lv_image = files_for_item(array(), array(), $lv);
-        } else {
-            $lv_image = 'Missing';
-        }
-        // Now that we've set the outside end of the array, use last and first key to get both positions
         $this->view->bifold = array(
-            //'Fr' => $quire[$first_key]['R']['record_id'],
             'Fr' => $fr_image,
             'Lv' => $lv_image,
 
             'Fv' => $fv_image,
             'Lr' => $lr_image,
         );
-
-
-        //$this->view->helper3 = $quire;
-
-
-
 
         $this->view->quire = array();
         foreach ($quire_group as $related) {

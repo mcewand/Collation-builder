@@ -20,7 +20,7 @@ echo head(array('title'=>__("Collation"), 'bodyclass'=>'collate browse'));
             <?php foreach ($bifold as $pos => $single): ?>
             <div>
               Position: <?php echo $pos; ?>
-              <div class="recto">
+              <div class="folio">
                 <?php echo $single; ?>
               </div>
 
