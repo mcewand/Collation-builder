@@ -10,13 +10,13 @@ echo head(array('title'=>__("Collation"), 'bodyclass'=>'collate browse'));
         <div class="current">
           <a href="/items/show/<?php echo $itemId; ?>" /><?php echo $title; ?></a> <br />
           <?php print_r($image); ?><br />
-          Quire: <?php echo $quire; ?> <br />
+          Quire: <?php echo $quire_num; ?> <br />
           Position: <?php echo $position; ?> <br />
           Side: <?php echo $side; ?> <br />
         </div>
         <div class="related">
           <div class="bifolio" style="background-color:#C0C0C0;">
-            Also in this bifolio:
+            Bifolio Group:
             <?php foreach ($bifold as $pos => $single): ?>
             <div>
               Position: <?php echo $pos; ?>

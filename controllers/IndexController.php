@@ -24,7 +24,7 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
 
         $metadata = item_type_elements($current);
 
-        $this->view->quire = $metadata['Quire'];
+        $this->view->quire_num = $metadata['Quire'];
         $this->view->position = $metadata['Position'];
         $this->view->side = $metadata['Side'];
 
