@@ -29,8 +29,8 @@ echo head(array('title'=>__("Collation Groups"), 'bodyclass'=>'collate browse'))
     <thead>
     <tr>
         <?php
-        $browseHeadings[__('ID')] = null;
         $browseHeadings[__('Name')] = null;
+        $browseHeadings[__('ID')] = null;
         echo browse_sort_links($browseHeadings, array('link_tag' => 'th scope="col"', 'list_tag' => ''));
         ?>
     </tr>
