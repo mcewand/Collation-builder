@@ -1,6 +1,6 @@
 <?php
 
-class Collate extends Omeka_Record_AbstractRecord
+class Quire extends Omeka_Record_AbstractRecord
 {
     public $id;
     public $c_group;

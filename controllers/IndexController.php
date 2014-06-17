@@ -158,17 +158,4 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
         }
 
     }
-
-    public function browseAction()
-    {
-        parent::browseAction();
-        // Get all collation groups from the table
-        //$this->view->total = $this->_helper->db->getTable()->totalEmbeds();
-
-    }
-
-    public function addAction()
-    {
-
-    }
 }

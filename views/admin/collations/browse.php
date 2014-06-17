@@ -4,13 +4,24 @@ echo head(array('title'=>__("Collation Groups"), 'bodyclass'=>'collate browse'))
 
 ?>
 <div>
-<?php
-  $collateTable = get_db()->getTable('Collate');
-  //$totalEmbeds = $embedTable->totalEmbeds($item->id);
-
-?>
 
 <div id='primary'>
+
+<?php if (!count($collates)): ?>
+    <div id="no-collations">
+        <h2><?php echo __('There are no collation groups yet.'); ?></h2>
+        <a href="<?php echo html_escape(url('collation-builder/add')); ?>" class="big green add button"><?php echo __('Add a collation group'); ?></a></p>
+    </div>
+
+<?php else: ?>
+
+<div class="table-actions">
+    <a href="<?php echo html_escape(url('collation-builder/add')); ?>" class="small green add button"><?php echo __('Add a collation group'); ?></a>
+</div>
+<?php endif; ?>
+
+
+
 
 <div class="pagination"><?php echo pagination_links(); ?></div>
 
@@ -29,7 +40,7 @@ echo head(array('title'=>__("Collation Groups"), 'bodyclass'=>'collate browse'))
     <?php foreach(loop('collation', $collates) as $collation):?>
     <tr>
         <td>
-            <span class='title'><a href='<?php echo url('../collation/' . metadata('collation', 'id')); ?>'>
+            <span class='title'><a href='<?php echo url('collation-builder/edit/' . metadata('collation', 'id')); ?>'>
                 <?php echo metadata('collation', 'name'); ?></a></span>
             <ul class='action-links group'>
             <li class='details-text'>

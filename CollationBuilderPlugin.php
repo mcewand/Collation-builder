@@ -172,24 +172,35 @@ class CollationBuilderPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $router = $array['router'];
         $router->addRoute(
-            'collation-browse',
+            'collations-browse',
             new Zend_Controller_Router_Route(
-                'collations/browse/:id',
+                'collation-builder',
                 array(
                     'module' => 'collation-builder',
-                    'controller' => 'index',
+                    'controller' => 'collations',
                     'action' => 'browse'
                 )
             )
         );
         $router->addRoute(
-            'collation-add',
+            'collations-add',
             new Zend_Controller_Router_Route(
-                'collation-builder/add/:id',
+                'collation-builder/add',
                 array(
                     'module' => 'collation-builder',
-                    'controller' => 'index',
+                    'controller' => 'collations',
                     'action' => 'add'
+                )
+            )
+        );
+        $router->addRoute(
+            'collations-edit',
+            new Zend_Controller_Router_Route(
+                'collation-builder/edit/:id',
+                array(
+                    'module' => 'collation-builder',
+                    'controller' => 'collations',
+                    'action' => 'edit'
                 )
             )
         );
@@ -208,7 +219,13 @@ class CollationBuilderPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function filterAdminNavigationMain($navArray)
     {
-        $navArray['CollationBuilder'] = array('label'=>__('Collation Builder'), 'uri'=>url('collation-builder'));
+        $navArray[] = array(
+            'label' => __('Collation Groups'),
+            'uri' => url('collation-builder'),
+            //'resource' => 'CollationBuilder_CollationsController',
+            //'privilege' => 'browse'
+        );
+
         return $navArray;
     }
 }
