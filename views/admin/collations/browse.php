@@ -3,7 +3,6 @@
 echo head(array('title'=>__("Collation Groups"), 'bodyclass'=>'collate browse'));
 
 ?>
-<div>
 
 <div id='primary'>
 
