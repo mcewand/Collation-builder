@@ -88,10 +88,9 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
         while($found == FALSE) {
             reset($quire);
             $first_key = key($quire);
-            print 'f: ' . $first_key;
             end($quire);
             $last_key = key($quire);
-            print 'l: ' . $last_key;
+
             if ($metadata['Position'] == $first_key) {
                 $found = TRUE;
             } elseif ($metadata['Position'] == $last_key) {
@@ -135,8 +134,8 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
         }
 
         $this->view->bifold = array(
-            'Fr' => $fr_image,
             'Lv' => $lv_image,
+            'Fr' => $fr_image,
 
             'Fv' => $fv_image,
             'Lr' => $lr_image,

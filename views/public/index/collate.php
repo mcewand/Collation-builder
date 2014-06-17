@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html>
 <?php
+
+$css = "
+.current {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.bifolio {
+  width: 50%;
+  float: left;
+  padding: 5px;
+}
+.quire {
+  width: 50%;
+  float: right;
+  padding: 5px;
+}
+.position-group {
+  margin-bottom: 2px;
+  padding: 3px;
+  border: 1px solid;
+}
+.right-side {
+  float:left;
+}
+";
+queue_css_string($css);
+echo head_css();
+
 echo head(array('title'=>__("Collation"), 'bodyclass'=>'collate browse'));
 ?>
 
@@ -8,37 +36,57 @@ echo head(array('title'=>__("Collation"), 'bodyclass'=>'collate browse'));
     <div>
       <div class='content'>
         <div class="current">
-          <a href="/items/show/<?php echo $itemId; ?>" /><?php echo $title; ?></a> <br />
-          <?php print_r($image); ?><br />
-          Quire: <?php echo $quire_num; ?> <br />
-          Position: <?php echo $position; ?> <br />
-          Side: <?php echo $side; ?> <br />
+          <div class="metadata">
+            <div class="title">
+              <h2><a href="/items/show/<?php echo $itemId; ?>" /><?php echo $title; ?></a></h2>
+            </div>
+            <span>
+              <strong>Quire</strong> <?php echo $quire_num; ?>
+              <strong>Folio</strong> <?php echo $position; ?>
+              <strong>Side</strong> <?php echo $side; ?>
+            </span>
+          </div>
+          <div class="image">
+            <?php print_r($image); ?><br />
+          </div>
         </div>
         <div class="related">
-          <div class="bifolio" style="background-color:#C0C0C0;">
-            Bifolio Group:
+          <div class="bifolio">
+            <h3>Bifolio Group</h3>
             <?php foreach ($bifold as $pos => $single): ?>
-            <div>
-              Position: <?php echo $pos; ?>
-              <div class="folio">
-                <?php echo $single; ?>
+              <?php $extra_class = '';
+                 if ($pos == 'Lv' || $pos == 'Fv') { $extra_class = 'right-side'; } ?>
+              <div class="<?php echo $extra_class; ?>">
+                Position: <?php echo $pos; ?>
+                <div class="folio">
+                  <?php echo $single; ?>
+                </div>
+
+
               </div>
-
-
-            </div>
             <?php endforeach; ?>
 
           </div>
-          <div class="quire" style="background-color:#00FFFF;">
-            Organization of this Quire:
+          <div class="quire">
+            <h3>Organization of this Quire</h3>
             <?php foreach ($quire_full as $pos => $single): ?>
-            <div>
-              Position: <?php echo $pos; ?>
+            <div class="position-group">
+              Folio: <?php echo $pos; ?>
               <div class="recto">
-                Recto: <?php echo isset($single['R']['record_id']) ? $single['R']['record_id'] : "Missing"; ?>
+                <?php $related_id = isset($single['R']['record_id']) ? $single['R']['record_id'] : "Missing"; ?>
+                <?php if ($related_id != 'Missing'): ?>
+                  <a href="/items/show/<?php echo $related_id; ?>">Recto</a>
+                <?php else: ?>
+                  <?php echo $related_id; ?>
+                <?php endif; ?>
               </div>
               <div class="verso">
-                Verso: <?php echo isset($single['V']['record_id']) ? $single['V']['record_id'] : "Missing"; ?>
+                <?php $related_id = isset($single['V']['record_id']) ? $single['V']['record_id'] : "Missing"; ?>
+                <?php if ($related_id != 'Missing'): ?>
+                  <a href="/items/show/<?php echo $related_id; ?>">Verso</a>
+                <?php else: ?>
+                  <?php echo $related_id; ?>
+                <?php endif; ?>
               </div>
 
 
@@ -47,8 +95,6 @@ echo head(array('title'=>__("Collation"), 'bodyclass'=>'collate browse'));
 
           </div>
 
-          <?php// print_r($helper2); ?> <br />
-          <?php //print_r($helper3); ?>
         </div>
       </div>
 
