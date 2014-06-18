@@ -96,8 +96,8 @@ class CollationBuilder_IndexController extends Omeka_Controller_AbstractActionCo
             } elseif ($metadata['Position'] == $last_key) {
                 $found = TRUE;
             } else {
-                array_shift($quire);
-                array_pop($quire);
+                unset($quire[$first_key]);
+                unset($quire[$last_key]);
             }
         }
 
